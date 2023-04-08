@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNet.Identity
+<style>
+	#registerLink:hover {
+		background-color: none;
+		position: relative;
+	}
+	#logoutForm {
+		z-index: 2;
+	}
+	.nav > li > a {
+		color: #634000;
+		background-color: #E6DDC4;
+		display:flex;
+		float:left;
+		z-index: 3;
+	}
+</style>
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+	using (Html.BeginForm("LogOff", "Account",new { area =""}, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right"}))
+	{
+		@Html.AntiForgeryToken()
+		<ul class="nav navbar-nav navbar-right">
+			<li class="active">@{Html.RenderAction("CartSummary", "ShoppingCart");}</li>
+			<li style="Color: #634000">
+				@Html.ActionLink("Hello ADMIN " + User.Identity.GetUserName() + "!", "Index", "ProductsAdm", new { area = "Admin" }, null)
+			</li>
+			<li style="position:center; background-color:none;"><a href="javascript:document.getElementById('logoutForm').submit()" style="color: #634000">Log off</a></li>
+		</ul>
+	}
+
+}
+else
+if (Request.IsAuthenticated)
+{
+	using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+	{
+		@Html.AntiForgeryToken()
+		<ul class="nav navbar-nav navbar-right">
+			<li class="active">@{Html.RenderAction("CartSummary", "ShoppingCart");}</li>
+			<li style="Color: #634000">
+				@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { style = "Color: #634000" })
+			</li>
+			<li style="position:center; background-color:none;"><a href="javascript:document.getElementById('logoutForm').submit()" style="color: #634000">Log off</a></li>
+		</ul>
+	}
+}
+else
+{
+	<ul class="nav navbar-nav navbar-right d-flex align-items-end ">
+		<li class="registerLink" id="registerLink">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { style = "Color: #634000" })</li>
+		<li class="loginLink" id="loginLink">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { style = "Color: #634000" })</li>
+	</ul>
+}

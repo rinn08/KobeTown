@@ -1,0 +1,44 @@
+﻿@model KobeTown.Models.Products
+
+@{
+	ViewBag.Title = "Chi tiết sản phẩm";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+	.btn {
+		font-size:12px;
+	}
+</style>
+<div class="row">
+    <div class="col-md-4">
+        <img src="~/Content/@Model.Category/@Model.Image" class="img-fluid" alt="@Model.Name">
+    </div>
+	<div class="col-md-8">
+		<h2>@Model.Name</h2>
+		<table class="table table-bordered">
+			<tr>
+				<th>Danh mục</th>
+				<td>@Model.Category</td>
+			</tr>
+			<tr>
+				<th>Giá</th>
+				<td>@Model.Price VNĐ</td>
+			</tr>
+			<tr>
+				<th>Trạng thái</th>
+				<td>@Model.Status</td>
+			</tr>
+			<tr>
+				<th>Mô tả</th>
+				<td>@Model.Description</td>
+			</tr>
+		</table>
+		<div class="card-footer">
+			@Html.ActionLink("Thêm vào giỏ hàng","AddToCart","ShoppingCart", new { id = Model.Id}, new {
+		   @class = "btn btn-info btn-sm"
+	   })
+		</div>
+	</div>
+</div>
+
+<a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại</a>

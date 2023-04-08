@@ -1,0 +1,37 @@
+﻿@model IEnumerable<KobeTown.Models.Products>
+
+@{
+	ViewBag.Title = "Guitar";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+	<h2 class="text-center mb-4">Danh sách đàn guitar</h2>
+	<div class="row">
+		@foreach (var item in Model)
+		{
+			if (item.Category == "Guitar")
+			{
+				<div class="col-lg-4 col-md-6 mb-4">
+					<div class="card h-100">
+						<img class="card-img-top" src="~/Content/@item.Category/@item.Image" alt="@item.Name">
+						<div class="card-body d-flex align-items-end">
+							<div class="card-body-item">
+								<a href="@Url.Action("Details", new { id = item.Id })">@item.Name</a>
+								<p class="card-text">@item.Price</p>
+							</div>
+						</div>
+						<div class="card-footer">
+							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary btn-sm">Chi tiết</a>
+							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-success btn-sm">Mua ngay</a>
+							@Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "ShoppingCart", new { id = item.Id }, new
+							{
+						   @class = "btn btn-info btn-sm"
+							})
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>
