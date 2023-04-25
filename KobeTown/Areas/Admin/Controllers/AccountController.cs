@@ -30,7 +30,8 @@ namespace KobeTown.Areas.Admin.Controllers
 		public ActionResult LogOff()
 		{
 			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-			return RedirectToAction("Index", "Products");
+			Session.Remove("IsAdmin");
+			return RedirectToAction("Index", "Home");
 		}
 
 		//

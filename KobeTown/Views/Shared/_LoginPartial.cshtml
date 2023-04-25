@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
 <style>
 	#registerLink:hover {
-		background-color: none;
-		position: relative;
+		background-color: none;/*
+		position: relative;*/
 	}
 	#logoutForm {
 		z-index: 2;
@@ -28,7 +28,6 @@
 			<li style="position:center; background-color:none;"><a href="javascript:document.getElementById('logoutForm').submit()" style="color: #634000">Log off</a></li>
 		</ul>
 	}
-
 }
 else
 if (Request.IsAuthenticated)
@@ -41,7 +40,7 @@ if (Request.IsAuthenticated)
 			<li style="Color: #634000">
 				@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { style = "Color: #634000" })
 			</li>
-			<li style="position:center; background-color:none;"><a href="javascript:document.getElementById('logoutForm').submit()" style="color: #634000">Log off</a></li>
+			<li  style="position:center; background-color:none;"><a href="javascript:document.getElementById('logoutForm').submit()" style="color: #634000">Log off</a></li>
 		</ul>
 	}
 }

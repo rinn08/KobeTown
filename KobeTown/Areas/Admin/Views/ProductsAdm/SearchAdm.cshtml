@@ -35,12 +35,6 @@
 	</div>
 </div>
 <div class="text-center">
-	@if (String.IsNullOrEmpty(Request.QueryString["searchString"]))
-	{
-		@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-	}
-	else
-	{
-		@Html.PagedListPager(Model, page => Url.Action("SearchAdm", new { page, searchString = Request.QueryString["searchString"] }))
-	}
+	@Html.PagedListPager(Model, page => Url.Action("SearchAdm", new { page, searchString = Request.QueryString["searchString"] }))
+
 </div>

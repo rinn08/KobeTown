@@ -6,7 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using KobeTown.Models;
+using PagedList.Mvc;
+using PagedList;
 
 namespace KobeTown.Areas.Admin.Controllers
 {
@@ -16,9 +19,20 @@ namespace KobeTown.Areas.Admin.Controllers
 
         // GET: Admin/Products
         [Authorize(Roles ="Admin")]
-        public ActionResult Index()
-        {
-            return View(db.Products.ToList());
+		public ActionResult Index(int? page)
+		{
+			var products = db.Products.OrderBy(p => p.Name);
+			int pageSize = 6;
+			int pageNumber = (page ?? 1);
+			return View(products.ToPagedList(pageNumber, pageSize));
+		}
+		[Authorize(Roles = "Admin")]
+		public ActionResult IndexSearch(int? page)
+		{
+			var products = db.Products.OrderBy(p => p.Name);
+			int pageSize = 6;
+			int pageNumber = (page ?? 1);
+			return View(products.ToPagedList(pageNumber, pageSize));
 		}
 		[Authorize(Roles = "Admin")]
 		public ActionResult GuitarAdm()
@@ -134,7 +148,7 @@ namespace KobeTown.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-		public ActionResult SearchAdm(string searchString)
+		public ActionResult SearchAdm(string searchString, int? page)
 		{
 			var context = new ApplicationDbContext();
 			var results =
@@ -142,10 +156,11 @@ namespace KobeTown.Areas.Admin.Controllers
 				 where
 				 m.Name.Contains(searchString)
 				 || m.Category.Contains(searchString)
-				 select m);
-			if (results.Count() > 0)
-				return View("Index", results);
-			return HttpNotFound("Thông tin tìm kiếm chưa có. Xin cảm ơn");
+				 select m).OrderBy(p => p.Name);
+            int pageSize = 6;
+			int pageNumber = (page ?? 1);
+            if (searchString == null) return RedirectToAction("Index");
+			return View("IndexSearch", results.ToPagedList(pageNumber, pageSize));
 		}
 		protected override void Dispose(bool disposing)
         {

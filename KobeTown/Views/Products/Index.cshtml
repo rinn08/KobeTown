@@ -34,7 +34,7 @@
 	<div class="row">
 		@foreach (var item in Model)
 		{
-			<div class="col-lg-4 col-md-6 mb-4">
+			<div class="col-lg-4 col-md-6 mb-4" >
 				<div class="card h-120">
 					<img class="card-img-top" src="~/Content/@item.Category/@item.Image" alt="@item.Name" style="object-fit: contain; height: 500px;">
 					<div class="card-body" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; overflow: hidden; ">
@@ -46,13 +46,13 @@
 						<div class="card-footer text-left " id="cardfooter">
 							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary btn-sm">Chi tiết</a>
 							@Html.ActionLink("Mua ngay", "BuyNow", "ShoppingCart", new { id = item.Id }, new
-						   {
-							   @class = "btn btn-success btn-sm"
-						   })
+							{
+								@class = "btn btn-success btn-sm"
+							})
 							@Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "ShoppingCart", new { id = item.Id }, new
-{
-	@class = "btn btn-info btn-sm"
-})
+							{
+								@class = "btn btn-info btn-sm"
+							})
 						</div>
 					</div>
 				</div>
@@ -60,5 +60,12 @@
 		}
 	</div>
 	<div class="text-center">
-		@Html.PagedListPager(Model, Page=> Url.Action("Index",new { Page }))
+		@if (String.IsNullOrEmpty(Request.QueryString["searchString"]))
+		{
+			@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+		}
+		else
+		{
+			@Html.PagedListPager(Model, page => Url.Action("Search", new { page, searchString = Request.QueryString["searchString"] }))
+		}
 	</div>

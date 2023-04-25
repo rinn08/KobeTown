@@ -8,10 +8,10 @@ namespace KobeTown.Models
 
     public partial class Products
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
 
-        [Required]
+		[Required]
         [StringLength(255)]
         public string Name { get; set; }
 

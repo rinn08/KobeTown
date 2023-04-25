@@ -4,7 +4,11 @@
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<style>
+	.container {
+		top: 60px;
+	}
+</style>
 <div class="container mt-5">
 	<h2 class="text-center mb-4">Danh sách sản phẩm</h2>
 	<div class="row">
@@ -35,12 +39,6 @@
 	</div>
 </div>
 <div class="text-center">
-	@if (String.IsNullOrEmpty(Request.QueryString["searchString"]))
-	{
-		@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-	}
-	else
-	{
-		@Html.PagedListPager(Model, page => Url.Action("SearchAdm", new { page, searchString = Request.QueryString["searchString"] }))
-	}
+	@Html.PagedListPager(Model, page => Url.Action("SearchAdm", new { page, searchString = Request.QueryString["searchString"] }))
+
 </div>

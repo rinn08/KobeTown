@@ -393,7 +393,7 @@ namespace KobeTown.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "AdminHome");
+            return RedirectToAction("Index", "Home");
         }
 
         //

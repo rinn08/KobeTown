@@ -58,6 +58,32 @@ namespace KobeTown.Controllers
 			//return RedirectToAction("Index", "ShoppingCart");
 			return RedirectToAction("Index", "Products");
 		}
+		public RedirectToRouteResult BuyNow(int id)
+		{
+			ProductModelContext db = new ProductModelContext();
+			List<CartItem> ShoppingCart = GetShoppingCartFromSession();
+			CartItem findCartItem = ShoppingCart.FirstOrDefault(m => m.Id == id);
+			if (findCartItem == null)
+			{
+				Products findproduct = db.Productss.FirstOrDefault(m => m.Id == id);
+				CartItem newItem = new CartItem()
+				{
+					Id = findproduct.Id,
+					Description = findproduct.Description,
+					Quantity = 1,
+					Image = findproduct.Image,
+					Price = findproduct.Price,
+					Category = findproduct.Category,
+					Name = findproduct.Name
+				};
+				ShoppingCart.Add(newItem);
+			}
+			else
+			{
+				findCartItem.Quantity++;
+			}
+			return RedirectToAction("Index", "ShoppingCart");
+		}
 		public RedirectToRouteResult UpdateCart(int id, int txtQuantity)
 		{
 			var itemFind = GetShoppingCartFromSession().FirstOrDefault(p => p.Id == id);

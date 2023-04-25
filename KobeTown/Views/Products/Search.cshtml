@@ -1,0 +1,17 @@
+﻿@model List<KobeTown.Models.Products>
+@foreach (var product in Model)
+{
+	<div class="col-md-4">
+		<div class="thumbnail">
+			<img src="@Url.Content(product.Image)" alt="product" />
+			<div class="caption">
+				<h4>@product.Name</h4>
+				<p>@product.Category</p>
+				<p>@product.Description</p>
+				<p>Price: @product.Price</p>
+				<p><a href="@Url.Action("Details", "Products", new { id = product.Id })" class="btn btn-primary" role="button">Details</a></p>
+			</div>
+		</div>
+	</div>
+}
+
