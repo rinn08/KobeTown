@@ -87,6 +87,32 @@ namespace KobeTown.Controllers
 			return Redirect(jmessage.GetValue("payUrl").ToString());
 		}
 
+		private static List<Orderr> orderList = new List<Orderr>();
+
+		// Hàm lấy thông tin đơn hàng từ cơ sở dữ liệu
+		private Orderr GetOrderFromDatabase(string orderId)
+		{
+			int OrderNo = 0;
+			return orderList.FirstOrDefault(o => o.OrderNo == OrderNo);
+		}
+
+		// Hàm lưu thông tin đơn hàng vào cơ sở dữ liệu
+		private void SaveOrderToDatabase(Orderr order)
+		{
+			Orderr existingOrder = orderList.FirstOrDefault(o => o.OrderNo == order.OrderNo);
+			if (existingOrder != null)
+			{
+				existingOrder.isPaid = order.isPaid;
+				existingOrder.isComplete = order.isComplete;
+			}
+			else
+			{
+				orderList.Add(order);
+			}
+		}
+
+
+
 		//Khi thanh toán xong ở cổng thanh toán Momo, Momo sẽ trả về một số thông tin, trong đó có errorCode để check thông tin thanh toán
 		//errorCode = 0 : thanh toán thành công (Request.QueryString["errorCode"])
 		//Tham khảo bảng mã lỗi tại: https://developers.momo.vn/#/docs/aio/?id=b%e1%ba%a3ng-m%c3%a3-l%e1%bb%97i
@@ -96,6 +122,19 @@ namespace KobeTown.Controllers
 			string rMessage = result.message;
 			string rOrderId = result.orderId;
 			string rErrorCode = result.errorCode; // = 0: thanh toán thành công
+			if (rErrorCode == "0")
+			{
+				// Đơn hàng thành công, cập nhật biến isPay và isComplete thành true
+				// Tùy theo cách bạn lưu trữ dữ liệu, bạn có thể cập nhật giá trị này vào đâu (ví dụ: cập nhật vào cơ sở dữ liệu, session, cache, ...)
+				// Ví dụ: cập nhật biến isPay và isComplete trong đối tượng Order
+				Orderr order = GetOrderFromDatabase(rOrderId); // Lấy thông tin đơn hàng từ cơ sở dữ liệu (hàm GetOrderFromDatabase là giả định)
+				if (order != null)
+				{
+					order.isPaid = true;
+					order.isComplete = true;
+					SaveOrderToDatabase(order); // Lưu thông tin đơn hàng đã cập nhật vào cơ sở dữ liệu (hàm SaveOrderToDatabase là giả định)
+				}
+			}
 			return View();
 		}
 

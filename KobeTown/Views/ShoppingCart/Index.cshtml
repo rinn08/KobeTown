@@ -92,6 +92,7 @@
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <style>
 	/* Thiết lập màu nền cho trang */
 	body {
@@ -111,8 +112,6 @@
 
 	/* Thiết lập phông chữ cho tiêu đề */
 	h2 {
-		font-family: 'Segoe UI', sans-serif;
-		font-weight: 700;
 		color: #333333;
 	}
 
@@ -157,6 +156,17 @@
 	.table thead tr {
 		display: none;
 	}
+	table {
+		max-width: 100%;
+		width: auto;
+		table-layout: fixed;
+	}
+
+	th,
+	td {
+		word-wrap: break-word;
+		white-space: normal;
+	}
 
 	/* Thiết lập màu nền cho các dòng chẵn */
 	.table tbody tr:nth-child(even) {
@@ -166,20 +176,65 @@
 	/* Thiết lập kích thước chữ cho các cột */
 	.table td:before {
 		font-weight: bold;
-		width: 30%;
-		display: inline-block;
+		display: block;
 	}
 
 	/* Thiết lập khoảng cách giữa các dòng */
 	.table td:before {
 		content: attr(data-label);
 		float: left;
-		margin-right: 10px;
 		font-size: 16px;
 	}
 	#tr {
 		text-align:center;
 	}
+	body {
+		background-color: #F6F6F6; 
+	}
+
+
+	h1 {
+		font-size: 24px;
+		color: #634000;
+		margin-bottom: 20px;
+	}
+
+	table {
+		border-collapse: collapse;
+		margin-bottom: 20px;
+	}
+
+	th, td {
+		padding: 10px;
+		text-align: left;
+	}
+
+	th {
+		background-color: #634000;
+		color: #FFF;
+	}
+
+	td {
+		border-bottom: 1px solid #CCC;
+	}
+
+	.total {
+		font-weight: bold;
+	}
+
+	.btn {
+		background-color: #634000;
+		color: #FFF;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 4px;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+		.btn:hover {
+			background-color: #9B6C16;
+		}
 </style>
 
 <script>
@@ -200,53 +255,60 @@
 		});
 	}
 </script>
-<div class="container">
-	<div class="row">
-		<div class="col-md-8 mx-auto">
-			<h2 class="text-center mb-4">Giỏ hàng của bạn</h2>
-			<div class="card">
+<div class="row">
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title">Giỏ hàng của bạn</h5>
+			<div class="table-responsive">
 				<table class="table table-hover">
-					<thead>
+					<thead >
 						<tr>
 							<th scope="col">Hình ảnh</th>
 							<th scope="col">Tên sản phẩm</th>
 							<th scope="col">Số lượng</th>
 							<th scope="col">Đơn giá</th>
 							<th scope="col">Thành tiền</th>
+							<th scope="col">Chi tiết</th>
+							<th scope="col">Xóa</th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach (var item in Model)
 						{
-							<tr id="tr"style="text-align:center; font-weight:bold">
-								<td style="align-content:center"> @item.Name </td>
-								<td><img src="~/Content/@item.Category/@item.Image" style="width:200px" /> </td>
-								@using (Html.BeginForm("UpdateCart", "ShoppingCart", new { id = item.Id }))
-								{
-									<td>
-										<input type="number" min="1" name="txtQuantity" value="@item.Quantity" style="background-color: #eee;" />
-									</td>
-									<td> @String.Format("{0:0,0}", item.Price) </td>
-									<td> @String.Format("{0:0,0}", item.Money) </td>
-									<td><a href="@Url.Action("Details", "Products", new { id = item.Id })"> Chi tiết </a></td>
-									<td> @Html.ActionLink("Xóa", "RemoveCartItem", new { id = item.Id })</td>
-									<td> <input type="submit" value="Cập nhật" /></td>
-								}
+							<tr>
+								<td><img src="~/Content/@item.Category/@item.Image" class="img-thumbnail" alt="@item.Name"></td>
+								<td>@item.Name</td>
+								<td>
+									@using (Html.BeginForm("UpdateCart", "ShoppingCart", new { id = item.Id }))
+									{
+										<div class="input-group">
+											<input type="number" min="1" name="txtQuantity" value="@item.Quantity" class="form-control">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="submit">Cập nhật</button>
+											</div>
+										</div>
+									}
+								</td>
+								<td>@String.Format("{0:0,0}", item.Price)</td>
+								<td>@String.Format("{0:0,0}", item.Money)</td>
+								<td><a href="@Url.Action("Details", "Products", new { id = item.Id })" class="btn btn-info">Chi tiết</a></td>
+								<td>@Html.ActionLink("Xóa", "RemoveCartItem", new { id = item.Id }, new { @class = "btn btn-danger" })</td>
 							</tr>
 						}
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="4"><strong>Tổng cộng:</strong></td>
-							<td><strong>@Model.Sum(p => p.Quantity * p.Price)</strong></td>
+							<td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
+							<td colspan="2"><strong>@Model.Sum(p => p.Quantity * p.Price)</strong></td>
+							<td></td>
 						</tr>
 					</tfoot>
 				</table>
-				<div class="card-body text-center">
-					@*<a href="#" class="btn btn-success btn-lg">Thanh toán</a>*@
-					@Html.ActionLink("Đặt hàng", "Orderr", "ShoppingCart", new { @class = "btn btn-success btn-lg" })
-				</div>
+			</div>
+			<div class="text-center">
+				@Html.ActionLink("Đặt hàng", "Orderr", "ShoppingCart", new { @class = "btn btn-success btn-lg" })
 			</div>
 		</div>
 	</div>
+
 </div>

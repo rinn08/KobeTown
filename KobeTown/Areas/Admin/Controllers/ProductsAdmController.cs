@@ -122,32 +122,53 @@ namespace KobeTown.Areas.Admin.Controllers
             }
             return View(products);
         }
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public ActionResult CreateAdm([Bind(Include = "Id,Name,Category,Status,Description,Price,Image")] Products products)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		db.Products.Add(products);
+		//		db.SaveChanges();
+		//		return RedirectToAction("Index");
+		//	}
 
-        // GET: Admin/Products/Delete/5
-        public ActionResult DeleteAdm(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
-            if (products == null)
-            {
-                return HttpNotFound();
-            }
-            return View(products);
-        }
+		//	return View(products);
+		//}
 
-        // POST: Admin/Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedAdm(int id)
-        {
-            Products products = db.Products.Find(id);
-            db.Products.Remove(products);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+		// GET: Admin/Products/Delete/5
+
+		// GET: Admin/Products/Delete/5
+		public ActionResult DeleteAdm(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Products products = db.Products.Find(id);
+			if (products == null)
+			{
+				return HttpNotFound();
+			}
+			return View(products);
+		}
+
+		// POST: Admin/Products/Delete/5
+		[HttpPost, ActionName("DeleteAdm")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteConfirmedAdm(int id)
+		{
+			Products products = db.Products.Find(id);
+			if (products == null)
+			{
+				return HttpNotFound();
+			}
+			db.Products.Remove(products);
+			db.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
 		public ActionResult SearchAdm(string searchString, int? page)
 		{
 			var context = new ApplicationDbContext();

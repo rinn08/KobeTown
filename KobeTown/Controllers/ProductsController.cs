@@ -14,13 +14,14 @@ namespace KobeTown.Controllers
 {
     public class ProductsController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
 		// GET: Products
 		public ActionResult Index(int? page)
 		{
 			var products = db.Products.OrderBy(p => p.Name);
-			int pageSize = 6;
+			int pageSize = 12;
 			int pageNumber = (page ?? 1);
 			return View(products.ToPagedList(pageNumber, pageSize));
 		}

@@ -1,41 +1,91 @@
 ﻿@model KobeTown.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Đăng ký tài khoản mới";
 }
 
-<h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-}
+<style>
+	.title {
+		padding: 1%;
+		max-width: fit-content;
+		background-color: #E6DDC4;
+		color: #634000;
+		font-size: 133%;
+		margin: 0;
+        border-radius: 0px 20px 0px 0px;
+	}
+	/*.viewBag {
+		background-color: #634000;
+	}*/
+	.under {
+		background-color: #E6DDC4;
+		border: 2px solid #E6DDC4;
+	}
+	.container {
+		background-color: white;
+		border-radius: 20px 20px 20px 20px;
+	}
+	.registerBtn {
+		background-color: #9b6c16; /* Màu nền của button */
+		color: #fff; /* Màu chữ trên button */
+		border: none; /* Loại bỏ viền của button */
+		transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+		border-radius: 0;
+		text-align: center;
+		border-radius: 10px 10px 10px 10px;
+		top:10px;
+	}
+	.registerBtn:hover {
+		background-color: #c4773b; /* Màu nền khi hover */
+		color: #fff; /* Màu chữ khi hover */
+	}
 
+	.registerBtn-alt {
+		background-color: #fff; /* Màu nền thay đổi của button */
+		color: #634000; /* Màu chữ thay đổi của button */
+		border: 1px solid #634000; /* Viền của button */
+	}
+
+	.registerBtn-alt:hover {
+		background-color: #c4773b; /* Màu nền khi hover */
+		color: #fff; /* Màu chữ khi hover */
+	}
+</style>
+<div class="container mt-4">
+	<div class="viewBag row">
+		<h2 class="title">@ViewBag.Title.</h2>
+		<div class="under"></div>
+	</div>
+	@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary("", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+			</div>
+		</div>
+		<br />
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" class="registerBtn btn-default" value="Register" />
+			</div>
+		</div>
+	}
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

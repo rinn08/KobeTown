@@ -4,19 +4,64 @@
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <style>
-	.btn {
-		font-size: 12px;
+	* {
+		font-size: 15px;
+		font-size: 100%;
+	}
+	.row .btn {
+		background-color: #9b6c16; /* Màu nền của button */
+		color: #fff; /* Màu chữ trên button */
+		border: none; /* Loại bỏ viền của button */
+		padding: 3% 6%; /* Kích thước padding của button */
+		transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+		border-radius:0;
+		font-size:150%;
+		text-align:center;
+	}
+		.row .btn:first-child {
+			border-bottom-left-radius:20px;
+			left:2.5%;
+			border-right:2px solid white;
+		}
+		.row .btn:last-child {
+			border-bottom-right-radius: 20px;
+			right:2.5%;
+		}
+		.row .btn:hover {
+			background-color:#c4773b ; /* Màu nền khi hover */
+			color: #fff; /* Màu chữ khi hover */
+		}
+
+	.row .btn-alt {
+		background-color: #fff; /* Màu nền thay đổi của button */
+		color: #634000; /* Màu chữ thay đổi của button */
+		border: 1px solid #634000; /* Viền của button */
 	}
 
+		.row .btn-alt:hover {
+			background-color: #c4773b; /* Màu nền khi hover */
+			color: #fff; /* Màu chữ khi hover */
+		}
+
+	.card-body {
+		padding: 0;
+		background-color: #E6DDC4;
+		border-radius: 0px 0px 20px 20px;
+		font-size:50%;
+	}
 	.card-footer {
-		object-fit: cover;
 		max-width: contain;
+		width: 100%;
+		background-color: #E6DDC4;
+		padding: 0;
+		border-radius: 20px 20px 20px 20px;
+		position:relative;
 	}
 
 	.card-title {
 		padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+		
 	}
 
 	.card-text {
@@ -28,31 +73,79 @@
 		flex-wrap: wrap;
 		justify-content: center;
 	}
+
+	.card {
+		position: relative;
+		transition: transform 0.3s;
+		border-radius: 20px 20px 20px 20px;
+		object-fit: cover;
+	}
+
+		.card:hover {
+			transform: scale(1.05);
+			z-index: 1;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+	.container {
+		padding-left:5%;
+		padding-right:5%;
+		background-color:white;
+	}
+	.card-title,
+	.card-text {
+		pointer-events: none;
+		color: #634000;
+	}
+	.btn {
+		padding:0;
+	}
+	.page-link {
+		color: #634000;
+	}
+	.page-item.active a {
+		color: #634000;
+		border: 2px solid #634000;
+		border-radius: 3px 3px 3px 3px;
+		position:relative;
+	}
+	.page-item.inactive a {
+		color: #808080;
+		background-color: #808080;
+	}
 </style>
-<div class="container mt-5">
-	<h2 class="text-center mb-4">Danh sách sản phẩm</h2>
+<div class="container mt-4">
+	<div class="breadcrumb">
+		<ul class="breadcrumb-list">
+			<li class="breadcrumb-item"><a href="https://localhost:44398">Trang chủ</a></li>
+			<li class="breadcrumb-item"><a href="/Products" ;">Danh mục sản phẩm</a></li>
+		</ul>
+	</div>
+	<div class="row" style="padding-left:0.5%;">
+		<div class="col mb-3 " style="color: #E6DDC4; background-color: #E6DDC4;  max-width:1px;"></div>
+		<h2 class=" col text-left mb-3"> Danh sách sản phẩm</h2>
+	</div>
+
 	<div class="row">
 		@foreach (var item in Model)
 		{
-			<div class="col-lg-4 col-md-6 mb-4" >
-				<div class="card h-120">
-					<img class="card-img-top" src="~/Content/@item.Category/@item.Image" alt="@item.Name" style="object-fit: contain; height: 500px;">
-					<div class="card-body" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; overflow: hidden; ">
-						<h4 class="card-title"><a href="@Url.Action("Details", new { id = item.Id })">@item.Name</a></h4>
-						<h5 class="card-text text-left">
+			<div class="listItem col-lg-3 col-md-4 mb-4">
+				<div class="card h-100">
+					<div>
+						<img class="card-img-top img-fluid" src="~/Content/@item.Category/@item.Image" alt="@item.Name" style="object-fit: contain; width:100%; height: 240px; border-radius: 20px 20px 0px 0px">
+					</div>
+					<div class="card-body" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); overflow: hidden;">
+						<h6 class="card-title">@item.Name</h6>
+						<h6 class="card-text text-left" style="color:black">
 							Mô tả: @item.Description <br />
 							Giá: @item.Price
-						</h5>
-						<div class="card-footer text-left " id="cardfooter">
-							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary btn-sm">Chi tiết</a>
-							@Html.ActionLink("Mua ngay", "BuyNow", "ShoppingCart", new { id = item.Id }, new
-							{
-								@class = "btn btn-success btn-sm"
-							})
-							@Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "ShoppingCart", new { id = item.Id }, new
-							{
-								@class = "btn btn-info btn-sm"
-							})
+						</h6>
+						<div class="card-footer text-center" id="cardfooter">
+							<div class="row text-center">
+								<a href="@Url.Action("Details", new { id = item.Id })" class="btn col text-center d-flex justify-content-center align-items-center centered-text" style="border-right: 1px solid #E6DDC4">Chi tiết</a>
+								<a class="btn col text-center d-flex justify-content-center align-items-center centered-text" style="border-right: 1px solid #E6DDC4" href="/ShoppingCart/BuyNow/@item.Id">Mua ngay</a>
+								<a class="btn col text-center d-flex justify-content-center align-items-center centered-text" href="/ShoppingCart/AddToCart/@item.Id">Thêm vào giỏ hàng</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -62,10 +155,69 @@
 	<div class="text-center">
 		@if (String.IsNullOrEmpty(Request.QueryString["searchString"]))
 		{
-			@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+			int totalItems = Model.TotalItemCount; // Tổng số sản phẩm
+			int itemsPerPage = 12; // Số sản phẩm trên mỗi trang
+			int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+			<div>@totalPages</div>
+			<ul class="pagination">
+				<li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+					<a class="page-link"  href="@Url.Action("Index", new { page = 1 })">Đầu</a>
+				</li>
+				@if (Model.HasPreviousPage)
+				{
+					<li class="page-item">
+						<a class="page-link"  href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Trước</a>
+					</li>
+				}
+				@for (int i = 1; i <= totalPages; i++)
+				{
+					<li class="page-item @(Model.PageNumber == i ? "active" : "inactive")">
+						<a class="page-link" style="background-color: #E6DDC4; " href="@Url.Action("Index", new { page = i })">@i</a>
+					</li>
+				}
+				@if (Model.HasNextPage)
+				{
+					<li class="page-item">
+						<a class="page-link"  href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Sau</a>
+					</li>
+				}
+				<li class="page-item @(Model.PageNumber == totalPages ? "disabled" : "")">
+					<a class="page-link" href="@Url.Action("Index", new { page = totalPages })">Cuối</a>
+				</li>
+			</ul>
 		}
 		else
 		{
-			@Html.PagedListPager(Model, page => Url.Action("Search", new { page, searchString = Request.QueryString["searchString"] }))
+			int totalItems = Model.TotalItemCount; // Tổng số sản phẩm
+			int itemsPerPage = 12; // Số sản phẩm trên mỗi trang
+			int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+
+			<ul class="pagination">
+				<li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+					<a class="page-link" href="@Url.Action("Search", new { page = 1, searchString = Request.QueryString["searchString"] })">Đầu</a>
+				</li>
+				@if (Model.HasPreviousPage)
+				{
+					<li class="page-item">
+						<a class="page-link" href="@Url.Action("Search", new { page = Model.PageNumber - 1, searchString = Request.QueryString["searchString"] })">Trước</a>
+					</li>
+				}
+				@for (int i = 1; i <= totalItems; i++)
+				{
+					<li class="page-item @(Model.PageNumber == i ? "active" : "")">
+						<a class="page-link" href="@Url.Action("Search", new { page = i, searchString = Request.QueryString["searchString"] })">@i</a>
+					</li>
+				}
+				@if (Model.HasNextPage)
+				{
+					<li class="page-item">
+						<a class="page-link" href="@Url.Action("Search", new { page = Model.PageNumber + 1, searchString = Request.QueryString["searchString"] })">Sau</a>
+					</li>
+				}
+				<li class="page-item @(Model.PageNumber == totalItems ? "disabled" : "")">
+					<a class="page-link" href="@Url.Action("Search", new { page = totalItems, searchString = Request.QueryString["searchString"] })">Cuối</a>
+				</li>
+			</ul>
 		}
 	</div>
+</div>

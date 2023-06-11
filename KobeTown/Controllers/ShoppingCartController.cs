@@ -31,6 +31,7 @@ namespace KobeTown.Controllers
 			}
 			return lstShoppingCart;
 		}
+		[Authorize]
 		public RedirectToRouteResult AddToCart(int id)
         {
             ProductModelContext db = new ProductModelContext();
@@ -58,6 +59,7 @@ namespace KobeTown.Controllers
 			//return RedirectToAction("Index", "ShoppingCart");
 			return RedirectToAction("Index", "Products");
 		}
+		[Authorize]
 		public RedirectToRouteResult BuyNow(int id)
 		{
 			ProductModelContext db = new ProductModelContext();

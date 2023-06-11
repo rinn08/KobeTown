@@ -1,33 +1,148 @@
 ﻿@model IEnumerable<KobeTown.Models.Products>
-
+@using PagedList.Mvc;
 @{
 	ViewBag.Title = "Guitar";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+	* {
+		font-size: 15px;
+		font-size: 100%;
+	}
 
-<div class="container mt-5">
-	<h2 class="text-center mb-4">Danh sách đàn guitar</h2>
+	.row .btn {
+		background-color: #9b6c16; /* Màu nền của button */
+		color: #fff; /* Màu chữ trên button */
+		border: none; /* Loại bỏ viền của button */
+		padding: 3% 6%; /* Kích thước padding của button */
+		transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+		border-radius: 0;
+		font-size: 150%;
+		text-align: center;
+	}
+
+		.row .btn:first-child {
+			border-bottom-left-radius: 20px;
+			left: 2.5%;
+			border-right: 2px solid white;
+		}
+
+		.row .btn:last-child {
+			border-bottom-right-radius: 20px;
+			right: 2.5%;
+		}
+
+		.row .btn:hover {
+			background-color: #c4773b; /* Màu nền khi hover */
+			color: #fff; /* Màu chữ khi hover */
+		}
+
+	.row .btn-alt {
+		background-color: #fff; /* Màu nền thay đổi của button */
+		color: #634000; /* Màu chữ thay đổi của button */
+		border: 1px solid #634000; /* Viền của button */
+	}
+
+		.row .btn-alt:hover {
+			background-color: #c4773b; /* Màu nền khi hover */
+			color: #fff; /* Màu chữ khi hover */
+		}
+
+	.card-body {
+		padding: 0;
+		background-color: #E6DDC4;
+		border-radius: 0px 0px 20px 20px;
+		font-size: 50%;
+	}
+
+	.card-footer {
+		max-width: contain;
+		width: 100%;
+		background-color: #E6DDC4;
+		padding: 0;
+		border-radius: 20px 20px 20px 20px;
+		position: relative;
+	}
+
+	.card-title {
+		padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+	}
+
+	.card-text {
+		padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+	}
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.card {
+		position: relative;
+		transition: transform 0.3s;
+		border-radius: 20px 20px 20px 20px;
+		object-fit: cover;
+	}
+
+		.card:hover {
+			transform: scale(1.05);
+			z-index: 1;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+	.container {
+		padding-left: 5%;
+		padding-right: 5%;
+		background-color: white;
+	}
+
+	.card-title,
+	.card-text {
+		pointer-events: none;
+		color: #634000;
+	}
+
+	.btn {
+		padding: 0;
+	}
+</style>
+<div class="container mt-4">
+	<div class="breadcrumb">
+		<ul class="breadcrumb-list">
+			<li class="breadcrumb-item"><a href="https://localhost:44398">Trang chủ</a></li>
+			<li class="breadcrumb-item"><a href="/Products" ;">Danh mục sản phẩm</a></li>
+			<li class="breadcrumb-item active"><a href=""> Danh sách GUITAR</a></li>
+		</ul>
+	</div>
+	<div class="row" style="padding-left:0.5%;">
+		<div class="col mb-3 " style="color: #E6DDC4; background-color: #E6DDC4;  max-width:1px;"></div>
+		<h2 class=" col text-left mb-3"> Danh sách Đàn GUITAR</h2>
+	</div>
+
 	<div class="row">
 		@foreach (var item in Model)
 		{
 			if (item.Category == "Guitar")
 			{
-				<div class="col-lg-4 col-md-6 mb-4">
+				<div class="listItem col-lg-3 col-md-4 mb-4">
 					<div class="card h-100">
-						<img class="card-img-top" src="~/Content/@item.Category/@item.Image" alt="@item.Name">
-						<div class="card-body d-flex align-items-end">
-							<div class="card-body-item">
-								<a href="@Url.Action("Details", new { id = item.Id })">@item.Name</a>
-								<p class="card-text">@item.Price</p>
-							</div>
+						<div>
+							<img class="card-img-top img-fluid" src="~/Content/@item.Category/@item.Image" alt="@item.Name" style="object-fit: contain; width:100%; height: 240px; border-radius: 20px 20px 0px 0px">
 						</div>
-						<div class="card-footer">
-							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-secondary btn-sm">Chi tiết</a>
-							<a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-success btn-sm">Mua ngay</a>
-							@Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "ShoppingCart", new { id = item.Id }, new
-							{
-						   @class = "btn btn-info btn-sm"
-							})
+						<div class="card-body" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); overflow: hidden;">
+							<h6 class="card-title">@item.Name</h6>
+							<h6 class="card-text text-left" style="color:black">
+								Mô tả: @item.Description <br />
+								Giá: @item.Price
+							</h6>
+							<div class="card-footer text-center" id="cardfooter">
+								<div class="row text-center">
+									<a href="@Url.Action("Details", new { id = item.Id })" class="btn col text-center d-flex justify-content-center align-items-center centered-text" style="border-right: 1px solid #E6DDC4">Chi tiết</a>
+									<a class="btn col text-center d-flex justify-content-center align-items-center centered-text" style="border-right: 1px solid #E6DDC4" href="/ShoppingCart/BuyNow/@item.Id">Mua ngay</a>
+									<a class="btn col text-center d-flex justify-content-center align-items-center centered-text" href="/ShoppingCart/AddToCart/@item.Id">Thêm vào giỏ hàng</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
